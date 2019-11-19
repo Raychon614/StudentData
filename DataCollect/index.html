@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./CSS/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <h1>基本信息表</h1>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <el-input v-model="userInfo.name" placeholder="请输入姓名"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <el-input v-model="userInfo.gender" placeholder="性别"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="4">
+                <div class="grid-content bg-purple">
+                    <el-input v-model="userInfo.class" placeholder="请输入班级"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-input v-model="userInfo.stdId" placeholder="请输入学号"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <el-date-picker v-model="userInfo.birthday" type="date" format="yyyy 年 MM 月 dd 日"
+                        value-format="yyyy-MM-dd" placeholder="选择日期时间">
+                    </el-date-picker>
+                </div>
+            </el-col>
+        </el-row>
+
+        <el-row>
+            <el-col :span="10">
+                <div class="grid-content bg-purple">
+                    <el-input v-model="userInfo.tel" placeholder="联系方式"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="10">
+                <div class="grid-content bg-purple">
+                    <el-input v-model="userInfo.adress" placeholder="请输入身份证上的具体地址"></el-input>
+                </div>
+            </el-col>
+            <!-- 添加信息按钮 -->
+            <el-button type="primary" @click="addUser" class="add-button">提交</el-button>
+
+        </el-row>
+
+
+        <div class="table">
+
+            <template>
+                <el-table :data="tableData" height="400" style="width: 100%">
+                    <el-table-column label="序号" width="50" fixed>
+                        <template slot-scope="scope">
+                            {{scope.$index+1}}
+                        </template>
+
+                    </el-table-column>
+                    <el-table-column prop="name" label="姓名" width="80" fixed>
+                    </el-table-column>
+                    <el-table-column prop="gender" label="性别" width="50">
+                    </el-table-column>
+                    <el-table-column prop="class" label="班级" width="120">
+                    </el-table-column>
+                    <el-table-column prop="stdId" label="学号" width="150">
+                    </el-table-column>
+                    <el-table-column prop="birthday" label="生日" width="120">
+                    </el-table-column>
+                    <el-table-column prop="tel" label="联系方式" width="120">
+                    </el-table-column>
+                    <el-table-column prop="address" label="籍贯" width="250">
+                    </el-table-column>
+                    <el-table-column label="操作" width="150" fixed="right">
+                        <!-- template  可以用来包裹作用域 是一个模板 -->
+                        <template slot-scope="scope">
+                            <el-button type="primary" icon="el-icon-edit" @click="editor(scope.row)" circle>
+                            </el-button>
+                            <el-button type="danger" icon="el-icon-delete" @click="delUser(scope.$index)" circle>
+                            </el-button>
+                        </template>
+                </el-table>
+            </template>
+
+            <!--  修改弹窗 -->
+            <el-dialog title="编辑用户信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                    
+                    <el-form :label-position="labelPosition" label-width="75px" :model="formLabelAlign">
+                        <el-form-item label="姓名">
+                                <el-input v-model="formLabelAlign.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="性别">
+                                <el-input v-model="formLabelAlign.gender"></el-input>
+                        </el-form-item>
+                        <el-form-item label="班级">
+                                <el-input v-model="formLabelAlign.class"></el-input>
+                        </el-form-item>
+                        <el-form-item label="学号">
+                                <el-input v-model="formLabelAlign.stdId"></el-input>
+                        </el-form-item>
+                        <el-form-item label="生日">
+                                <el-date-picker v-model="userInfo.birthday" type="date" format="yyyy 年 MM 月 dd 日"
+                             value-format="yyyy-MM-dd" placeholder="选择日期时间">
+                    </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="联系方式">
+                                <el-input v-model="formLabelAlign.tel"></el-input>
+                        </el-form-item>
+                        <el-form-item label="籍贯">
+                                <el-input v-model="formLabelAlign.address"></el-input>
+                        </el-form-item>
+
+                    </el-form>
+
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="dialogVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                    </span>
+                </el-dialog>
+            </el-table-column>
+
+        </div>
+
+
+
+
+    </div>
+
+    <!-- Echarts -->
+    <div id="main"></div>
+
+
+
+    <!-- 先引入 Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./JavaScript/index.js"></script>
+    <script src="./echarts-4.5.0/package/dist/echarts-en.min.js"></script>
+    <script src="./JavaScript/echart.js"></script>
+</body>
+
+</html>
